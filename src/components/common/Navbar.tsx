@@ -1,0 +1,163 @@
+import { useEffect, useState } from "react";
+import Logo from "@/assets/logo.svg";
+import ColorLogo from "@/assets/color-logo.svg";
+import { LogOut, Menu, X } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+
+const Navbar = () => {
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Sign up", path: "/sign-up" },
+  ];
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, logout } = useAuth();
+  const isHomePage = location.pathname === "/";
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 w-full h-16 flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${
+        isScrolled
+          ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4"
+          : " py-4 md:py-6"
+      } ${isHomePage ? "bg-transparent" : "bg-[#9d76b7]"}`}
+    >
+      {/* Logo */}
+      <a
+        href="/"
+        className={`flex flex-2/12 items-center justify-center  gap-2 ml-4`}
+      >
+        <img
+          src={isScrolled ? ColorLogo : Logo}
+          alt="logo"
+          className="w-9 h-9 "
+        />
+        <p
+          className={` text-base font-sans font-bold ${
+            isScrolled ? "text-[#9d76b7]" : "text-white"
+          }`}
+        >
+          Voyago
+        </p>
+      </a>
+
+      {/* Desktop Nav */}
+      <div className="hidden md:flex basis-2/5 items-center justify-evenly">
+        {navLinks.map((link, i) => (
+          <a
+            key={i}
+            href={link.path}
+            className="group flex flex-col gap-0.5 text-base font-medium font-sans"
+          >
+            <p className={`${isScrolled ? "text-[#9d76b7]" : "text-white"}`}>
+              {link.name}
+            </p>
+            <div
+              className={`${
+                isScrolled ? "bg-[#41414159]" : "bg-white"
+              } h-0.5 w-0 group-hover:w-full transition-all duration-300`}
+            />
+          </a>
+        ))}
+
+        {user ? (
+          <button
+            className={`px-6! py-2! flex items-center gap-1 rounded-full! font-medium! ml-4 transition-all duration-500  ${
+              isScrolled ? "bg-[#F7F5F5]!  text-black!" : " text-white!"
+            }`}
+            onClick={logout}
+          >
+            <LogOut
+              className="w-4 h-4 font-medium"
+              color={isScrolled ? "#000" : "#fff"}
+            />{" "}
+            Log out
+          </button>
+        ) : (
+          <button
+            className={`px-6! py-2!  rounded-full! font-medium! ml-4 transition-all duration-500  ${
+              isScrolled
+                ? "bg-[#9d76b7]! text-white!"
+                : "bg-[#F7F5F5]!  text-[#9d76b7]!"
+            }`}
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </button>
+        )}
+      </div>
+
+      {/* Mobile Menu Button */}
+      <div className="flex items-center gap-3 md:hidden">
+        <Menu
+          className={`w-7 h-7 cursor-pointer ${isScrolled ? "invert" : ""}`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          color="#fff"
+        />
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`fixed top-0 left-0 w-full h-screen bg-white text-base flex flex-col md:hidden items-center justify-center gap-6 font-medium text-gray-800 transition-all duration-500 ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <button
+          className="absolute top-4 right-4"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <X className="h-6 w-6 cursor-pointer" />
+        </button>
+
+        {navLinks.map((link, i) => (
+          <a
+            key={i}
+            href={link.path}
+            onClick={() => setIsMenuOpen(false)}
+            className="text-lg"
+          >
+            {link.name}
+          </a>
+        ))}
+
+        {user ? (
+          <button
+            className={`px-6! py-2! flex items-center gap-1 rounded-full! font-medium! ml-4 transition-all duration-500  bg-black text-white `}
+            onClick={() => {
+              logout();
+              setIsMenuOpen(false);
+            }}
+          >
+            Log out
+          </button>
+        ) : (
+          <button
+            className="bg-[#9d76b7]! text-white! px-8! py-2.5! rounded-full! cursor-pointer! transition-all duration-500"
+            onClick={() => {
+              setIsMenuOpen(false);
+              navigate("/login");
+            }}
+          >
+            Login
+          </button>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

@@ -23,31 +23,35 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-
+    handleScroll(); // Initial check
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full h-16 flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${
-        isScrolled
-          ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4"
-          : " py-4 md:py-6"
-      } ${isHomePage ? "bg-transparent" : "bg-[#9d76b7]"}`}
+      className={`fixed top-0 left-0 w-full h-16 flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 
+         ${
+           isHomePage
+             ? isScrolled
+               ? "bg-white/80! shadow-md text-gray-700! backdrop-blur-lg py-3 md:py-4"
+               : "bg-transparent! text-white py-4 md:py-6"
+             : "bg-[#9d76b7] text-white py-4 md:py-6"
+         }
+          `}
     >
       {/* Logo */}
       <a
         href="/"
-        className={`flex flex-2/12 items-center justify-center  gap-2 ml-4`}
+        className={`flex flex-2/12 items-center justify-start  gap-2 ml-18!`}
       >
         <img
           src={isScrolled ? ColorLogo : Logo}
           alt="logo"
-          className="w-9 h-9 "
+          className="w-8 h-8 "
         />
         <p
-          className={` text-base font-sans font-bold ${
+          className={` text-3xl font-sans font-bold ${
             isScrolled ? "text-[#9d76b7]" : "text-white"
           }`}
         >

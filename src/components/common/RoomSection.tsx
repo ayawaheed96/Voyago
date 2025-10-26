@@ -6,13 +6,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRooms } from "../../store/roomsSlice";
 import { Spinner } from "./Spinner";
 import { selectFilteredRooms } from "../../store/selectors";
+import type { RootState } from "../../store/store";
 
 const RoomsSection = () => {
   const dispatch = useDispatch();
   const filteredRooms = useSelector(selectFilteredRooms);
 
   const [loading, setLoading] = useState(true);
-
+  const reservations = useSelector(
+    (state: RootState) => state.reservations.items
+  );
+  useEffect(() => {
+    console.log("Reservations in RoomCard:", reservations);
+  }, [reservations]);
   useEffect(() => {
     const interval = setTimeout(() => setLoading(false), 1000);
     dispatch(setRooms(rooms));

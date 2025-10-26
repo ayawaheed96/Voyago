@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import { mockUsers } from "../assets/assets";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store/store";
+import useToast from "../hooks/useToast";
+import { loginUser } from "../store/authSlice";
 
 interface FormData {
   name: string;
@@ -16,9 +18,9 @@ const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const { login } = useAuth();
+  const toast = useToast();
   const navigate = useNavigate();
-  const [existedUserError, setExistedUserError] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = async (data: FormData) => {
     const userExists = mockUsers.find(
@@ -26,14 +28,17 @@ const SignUp = () => {
     );
 
     if (userExists) {
-      setExistedUserError("Sorry! this email already exists ❌");
+      toast.error("Sorry! this email already exists");
       return;
     }
 
     const newUser = { ...data };
     mockUsers.push(newUser);
-    const success = await login(data.username, data.password);
-    if (success) {
+    const result = await dispatch(
+      loginUser({ username: newUser.username, password: newUser.password })
+    );
+    if (loginUser.fulfilled.match(result)) {
+      toast.success(`Hi ${newUser.name}! You've Signed Up Successfully! 🎉`);
       navigate("/dashboard");
     }
   };
@@ -75,9 +80,6 @@ const SignUp = () => {
               message: "Please enter a valid email address",
             },
           })}
-          onChange={() => {
-            if (existedUserError) setExistedUserError("");
-          }}
         />
         {errors.username && (
           <p className="text-red-500 text-xs md:text-sm md:font-semibold mb-3 w-10/12">
@@ -101,12 +103,6 @@ const SignUp = () => {
             {errors.password.message}
           </p>
         )}
-        {existedUserError && (
-          <p className="text-red-500 text-xs md:text-sm md:font-semibold mb-3">
-            {existedUserError}
-          </p>
-        )}
-
         <button
           type="submit"
           className="w-10/12 bg-[#9d76b7] hover:bg-purple-700 disabled:bg-purple-300 text-white font-semibold py-2 px-4 mt-2 transition-all"

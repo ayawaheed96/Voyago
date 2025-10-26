@@ -1,31 +1,31 @@
-import type { FC } from "react";
+import { useState, type FC } from "react";
 import type { Room } from "../../types/types";
-import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import BookModal from "./BookModal";
 
 interface RoomCardProps {
   room: Room;
 }
 
 const RoomCard: FC<RoomCardProps> = ({ room }) => {
-  const { user } = useAuth();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
   const { id, name, image, type, price, available } = room;
+  const user = useSelector((state: RootState) => state.auth.user);
 
-  const onBook = () => {
-    alert(`Room "${name}" booked successfully! 🎉`);
-  };
   return (
     <div
       key={id}
       className="max-w-xs bg-white shadow-sm rounded-lg! overflow-hidden border border-[#b5b5b55e] hover:shadow-md transition-all duration-300 "
-      onClick={() => navigate(`/rooms/${id}`)}
     >
       {/* Image */}
       <img
         src={image}
         alt={name}
         className="w-full h-48 object-cover cursor-pointer"
+        onClick={() => navigate(`/rooms?id=${id}`)}
       />
 
       {/* Content */}
@@ -42,7 +42,7 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
 
           {user && (
             <div
-              onClick={onBook}
+              onClick={() => setIsOpen(true)}
               className={`p-2! border  rounded-md! text-sm font-medium   transition-all!
           ${
             available
@@ -56,6 +56,11 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
           )}
         </div>
       </div>
+      <BookModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        room={{ id, price, name, image }}
+      />
     </div>
   );
 };

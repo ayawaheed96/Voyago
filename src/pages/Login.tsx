@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import useToast from "../hooks/useToast";
+import { loginUser } from "../store/authSlice";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store/store";
 
 const Login = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const toast = useToast();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { login } = useAuth();
-  const navigate = useNavigate();
 
   const handleLogin = async () => {
-    setError("");
-    const success = await login(username, password);
-    if (success) {
+    const result = await dispatch(loginUser({ username, password }));
+    if (loginUser.fulfilled.match(result)) {
+      toast.success(`Login Successfully! 🎉`);
       navigate("/dashboard");
     } else {
-      setError("Invalid username or password ❌");
+      toast.error((result.payload as string) || " Wrong credentials ");
     }
   };
 
@@ -28,29 +31,17 @@ const Login = () => {
 
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Email"
           value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-            if (error) setError("");
-          }}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            if (error) setError("");
-          }}
+          onChange={(e) => setPassword(e.target.value)}
           className="border border-gray-300 rounded-lg p-2 w-full mb-4"
         />
-
-        {error && (
-          <p className="text-red-500 text-xs md:text-sm md:font-semibold mb-3">
-            {error}
-          </p>
-        )}
 
         <button
           onClick={handleLogin}

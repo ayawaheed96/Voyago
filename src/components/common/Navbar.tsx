@@ -3,7 +3,9 @@ import Logo from "@/assets/logo.svg";
 import ColorLogo from "@/assets/color-logo.svg";
 import { LogOut, Menu, X } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { logout } from "../../store/authSlice";
 
 const Navbar = () => {
   const navLinks = [
@@ -14,7 +16,9 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const isHomePage = location.pathname === "/";
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,7 +27,7 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    handleScroll(); // Initial check
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -46,13 +50,17 @@ const Navbar = () => {
         className={`flex flex-2/12 items-center justify-start  gap-2 ml-18!`}
       >
         <img
-          src={isScrolled ? ColorLogo : Logo}
+          src={isScrolled && isHomePage ? ColorLogo : Logo}
           alt="logo"
           className="w-8 h-8 "
         />
         <p
           className={` text-3xl font-sans font-bold ${
-            isScrolled ? "text-[#9d76b7]" : "text-white"
+            isScrolled
+              ? isHomePage
+                ? "text-[#9d76b7]"
+                : "text-white"
+              : "text-white"
           }`}
         >
           Voyago
@@ -67,7 +75,15 @@ const Navbar = () => {
             href={link.path}
             className="group flex flex-col gap-0.5 text-base font-medium font-sans"
           >
-            <p className={`${isScrolled ? "text-[#9d76b7]" : "text-white"}`}>
+            <p
+              className={`${
+                isScrolled
+                  ? isHomePage
+                    ? "text-[#9d76b7]"
+                    : "text-white"
+                  : "text-white"
+              }`}
+            >
               {link.name}
             </p>
             <div
@@ -83,7 +99,7 @@ const Navbar = () => {
             className={`px-6! py-2! flex items-center gap-1 rounded-full! font-medium! ml-4 transition-all duration-500  ${
               isScrolled ? "bg-[#F7F5F5]!  text-black!" : " text-white!"
             }`}
-            onClick={logout}
+            onClick={() => dispatch(logout())}
           >
             <LogOut
               className="w-4 h-4 font-medium"
@@ -142,7 +158,7 @@ const Navbar = () => {
           <button
             className={`px-6! py-2! flex items-center gap-1 rounded-full! font-medium! ml-4 transition-all duration-500  bg-black text-white `}
             onClick={() => {
-              logout();
+              dispatch(logout());
               setIsMenuOpen(false);
             }}
           >

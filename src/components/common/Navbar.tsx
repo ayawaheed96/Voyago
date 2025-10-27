@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Logo from "@/assets/logo.svg";
 import ColorLogo from "@/assets/color-logo.svg";
-import { LogOut, Menu, X } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { LogOut, Menu, UserCircle2, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import { logout } from "../../store/authSlice";
@@ -34,20 +34,19 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full h-16 flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 
+      className={`fixed top-0 left-0 w-full h-16 flex items-center justify-between transition-all duration-500 z-50 
          ${
            isHomePage
              ? isScrolled
-               ? "bg-white/80! shadow-md text-gray-700! backdrop-blur-lg py-3 md:py-4"
-               : "bg-transparent! text-white py-4 md:py-6"
+               ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4"
+               : "bg-transparent text-white py-4 md:py-6"
              : "bg-[#9d76b7] text-white py-4 md:py-6"
          }
           `}
     >
-      {/* Logo */}
-      <a
-        href="/"
-        className={`flex flex-2/12 items-center justify-start  gap-2 ml-18!`}
+      <Link
+        to="/"
+        className={`flex flex-2/12 items-center justify-start  gap-2 ml-18 `}
       >
         <img
           src={isScrolled && isHomePage ? ColorLogo : Logo}
@@ -65,14 +64,13 @@ const Navbar = () => {
         >
           Voyago
         </p>
-      </a>
+      </Link>
 
-      {/* Desktop Nav */}
       <div className="hidden md:flex basis-2/5 items-center justify-evenly">
         {navLinks.map((link, i) => (
-          <a
+          <Link
             key={i}
-            href={link.path}
+            to={link.path}
             className="group flex flex-col gap-0.5 text-base font-medium font-sans"
           >
             <p
@@ -91,28 +89,52 @@ const Navbar = () => {
                 isScrolled ? "bg-[#41414159]" : "bg-white"
               } h-0.5 w-0 group-hover:w-full transition-all duration-300`}
             />
-          </a>
+          </Link>
         ))}
 
         {user ? (
-          <button
-            className={`px-6! py-2! flex items-center gap-1 rounded-full! font-medium! ml-4 transition-all duration-500  ${
-              isScrolled ? "bg-[#F7F5F5]!  text-black!" : " text-white!"
-            }`}
-            onClick={() => dispatch(logout())}
-          >
-            <LogOut
-              className="w-4 h-4 font-medium"
-              color={isScrolled ? "#000" : "#fff"}
-            />{" "}
-            Log out
-          </button>
+          <div className="flex items-center gap-1 transition-all duration-300">
+            <div
+              className={`px-6  py-2  flex items-center gap-1 rounded-full  font-medium  ml-4 transition-all duration-500  ${
+                isScrolled ? "bg-[#F7F5F5]   text-black " : " text-white "
+              }`}
+            >
+              <div className="flex items-center gap-1">
+                <UserCircle2
+                  className={`w-4 h-4 ${
+                    isScrolled ? "text-[#9d76b7]" : "#fff"
+                  }`}
+                />
+                <p
+                  className={`font-md capitalize ${
+                    isScrolled ? "text-[#9d76b7]" : "#fff"
+                  }`}
+                >
+                  {user.name}
+                </p>{" "}
+                |
+              </div>
+
+              <button
+                className="m-0 p-0 flex items-center gap-1"
+                onClick={() => dispatch(logout())}
+              >
+                <LogOut
+                  className={`w-4 h-4 font-medium mt-1 ${
+                    isScrolled ? "text-black" : "text-white"
+                  }`}
+                  // color={isScrolled ? "#000" : "#fff"}
+                />{" "}
+                Log out
+              </button>
+            </div>
+          </div>
         ) : (
           <button
-            className={`px-6! py-2!  rounded-full! font-medium! ml-4 transition-all duration-500  ${
+            className={`px-6  py-2   rounded-full  font-medium  ml-4 transition-all duration-500  ${
               isScrolled
-                ? "bg-[#9d76b7]! text-white!"
-                : "bg-[#F7F5F5]!  text-[#9d76b7]!"
+                ? "bg-[#9d76b7]  text-white "
+                : "bg-[#F7F5F5]   text-[#9d76b7] "
             }`}
             onClick={() => navigate("/login")}
           >
@@ -144,19 +166,19 @@ const Navbar = () => {
         </button>
 
         {navLinks.map((link, i) => (
-          <a
+          <Link
             key={i}
-            href={link.path}
+            to={link.path}
             onClick={() => setIsMenuOpen(false)}
             className="text-lg"
           >
             {link.name}
-          </a>
+          </Link>
         ))}
 
         {user ? (
           <button
-            className={`px-6! py-2! flex items-center gap-1 rounded-full! font-medium! ml-4 transition-all duration-500  bg-black text-white `}
+            className={`px-6  py-2  flex items-center gap-1 rounded-full  font-medium  ml-4 transition-all duration-500  bg-black text-white `}
             onClick={() => {
               dispatch(logout());
               setIsMenuOpen(false);
@@ -166,7 +188,7 @@ const Navbar = () => {
           </button>
         ) : (
           <button
-            className="bg-[#9d76b7]! text-white! px-8! py-2.5! rounded-full! cursor-pointer! transition-all duration-500"
+            className="bg-[#9d76b7]  text-white  px-8  py-2.5  rounded-full  cursor-pointer  transition-all duration-500"
             onClick={() => {
               setIsMenuOpen(false);
               navigate("/login");

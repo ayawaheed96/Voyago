@@ -8,3 +8,11 @@ export interface Room {
   description: string;
   available: boolean;
 }
+export interface Reservation {
+  id: string;
+  roomId: string;
+  name: string;
+  date: { checkIn: Date; checkOut: Date };
+  price: number;
+  image: string;
+}

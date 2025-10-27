@@ -1,16 +1,18 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../common/Navbar";
+import Footer from "../common/Footer";
 
 const RootLayout = () => {
   return (
     <div className="relative z-10 h-screen w-screen">
-      <main className="scrollbar-hide relative m-2 min-w-0 flex-1 overflow-hidden rounded-2xl bg-cards sm:m-4">
+      <main className="scrollbar-hide relative min-w-0 flex-1 overflow-hidden bg-cards">
         <Navbar />
         <div className="relative h-full w-full overflow-auto">
-          <div className="p-4 pt-20">
+          <div>
             <Outlet />
           </div>
         </div>
+        <Footer />
       </main>
     </div>
   );

@@ -44,12 +44,12 @@ const CustomModal: React.FC<ModalProps> = ({
         <div className="mt-4 flex w-full items-center justify-center gap-4">
           <button
             onClick={onClose}
-            className="py-2! px-6! border rounded-md! text-sm md:text-md font-medium  transition-all cursor-pointer border-[#9d76b7] text-[#9d76b7]"
+            className="py-2  px-6  border rounded-md  text-sm md:text-md font-medium  transition-all cursor-pointer border-[#9d76b7] text-[#9d76b7]"
           >
             {cancelText}
           </button>
           <button
-            className="p-2! border rounded-md! text-sm font-medium transition-all! cursor-pointer border-[#9d76b7] text-[#9d76b7] hover:bg-[#9d76b7] hover:text-white"
+            className="p-2  border rounded-md  text-sm font-medium transition-all  cursor-pointer border-[#9d76b7] text-[#9d76b7] hover:bg-[#9d76b7] hover:text-white"
             onClick={onConfirm}
             disabled={disabledConfirm}
           >

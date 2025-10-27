@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/common/ProtectedDashboard";
+import RoomDetails from "./components/common/RoomDetails";
 const AppRouter = () => {
   return (
     <>
@@ -24,7 +25,7 @@ const AppRouter = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/roomId" element={<div />} />
+            <Route path="/rooms/:id" element={<RoomDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

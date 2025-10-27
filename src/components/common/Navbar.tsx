@@ -146,7 +146,9 @@ const Navbar = () => {
       {/* Mobile Menu Button */}
       <div className="flex items-center gap-3 md:hidden">
         <Menu
-          className={`w-7 h-7 cursor-pointer ${isScrolled ? "invert" : ""}`}
+          className={`w-7 h-7 cursor-pointer ${
+            isScrolled ? "invert" : ""
+          } mr-4`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           color="#fff"
         />

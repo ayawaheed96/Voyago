@@ -17,7 +17,7 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
   return (
     <div
       key={id}
-      className="bg-white shadow-sm rounded-lg  overflow-hidden border border-[#b5b5b55e] hover:shadow-md transition-all duration-300 "
+      className="w-fullbg-white shadow-sm rounded-lg  overflow-hidden border border-[#b5b5b55e] hover:shadow-md transition-all duration-300 "
     >
       <Link to={`/rooms/${id}`}>
         <img

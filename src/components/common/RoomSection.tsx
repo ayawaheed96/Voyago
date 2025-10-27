@@ -71,7 +71,7 @@ const RoomsSection = () => {
           <Spinner />
         </div>
       ) : (
-        <div className="w-full px-16">
+        <div className="w-full px-12 md:px-16">
           <div className="w-full flex items-center justify-between ">
             <h2 className="text-2xl md:text-3xl font-medium font-serif text-[#151617d2]">
               Rooms

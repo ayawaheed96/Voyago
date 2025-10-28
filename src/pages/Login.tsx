@@ -35,7 +35,7 @@ const Login = () => {
     <div className="flex items-center justify-center h-screen bg-[#F7F5F5] ">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center justify-center bg-white shadow-md py-8  rounded-xl  w-1/3"
+        className="flex flex-col items-center justify-center bg-white shadow-md py-8  rounded-xl w-3/4 md:w-1/3"
       >
         <h2 className="text-2xl font-semibold my-4 text-center text-[#171717]">
           Login

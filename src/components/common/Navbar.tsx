@@ -147,10 +147,10 @@ const Navbar = () => {
       <div className="flex items-center gap-3 md:hidden">
         <Menu
           className={`w-7 h-7 cursor-pointer ${
-            isScrolled ? "invert" : ""
+            isScrolled ? "text-[#9d76b7]" : "text-white"
           } mr-4`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          color="#fff"
+          // color="#fff"
         />
       </div>
 

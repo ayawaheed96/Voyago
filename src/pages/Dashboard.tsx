@@ -15,16 +15,16 @@ const Dashboard = () => {
         </h3>
       </div>
 
-      <div className="my-10 px-18">
+      <div className="my-10 px-4 md:px-18">
         {reservations.length === 0 ? (
-          <div className="my-12 py-3 flex flex-col items-center justify-center gap-2">
+          <div className="my-12 py-4 flex flex-col items-center justify-center gap-2">
             <CalendarX className="w-18 h-18 md:w-24 md:h-24 text-[#817c85cc]" />
             <p className="text-gray-500 text-center font-sm md:font-medium">
               You have no reservations yet.
             </p>
           </div>
         ) : (
-          <ul className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center">
+          <ul className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center  py-10">
             {reservations.map((r) => (
               <ReservationCard reservation={r} key={r.id} />
             ))}

@@ -66,7 +66,7 @@ const RoomDetails = () => {
 
       <div className="mt-8">
         <div className="w-full flex items-center justify-between">
-          <h1 className="text-3xl font-semibold font-serif text-[#151617d2]">
+          <h1 className="text-xl md:text-3xl font-semibold font-serif text-[#151617d2]">
             {room.name}
           </h1>
           {user && (
@@ -74,7 +74,7 @@ const RoomDetails = () => {
               {
                 <div
                   onClick={() => setIsOpen(true)}
-                  className={`px-6 py-3 border rounded-md text-md font-medium transition-all 
+                  className={`px-2 md:px-6 py-3 border rounded-md text-md font-medium transition-all 
           ${
             available
               ? isBooked

@@ -61,3 +61,8 @@ The project focuses on providing a clean UI/UX experience with proper state mana
 git clone <your-repo-link>
 cd voyago
 ```
+
+## Demo Credentials
+For testing purposes, you can use the following credentials:
+- **Username:** test@gmail.com or aya@gmail.com
+- **Password:** 1234
